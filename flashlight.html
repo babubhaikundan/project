@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Android Flashlight</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #222;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+  }
+  h1 {
+    margin-bottom: 1em;
+  }
+  button {
+    background-color: #4CAF50;
+    border: none;
+    padding: 20px 40px;
+    font-size: 1.2em;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  button:disabled {
+    background-color: #888;
+    cursor: not-allowed;
+  }
+  button:hover:not(:disabled) {
+    background-color: #45a049;
+  }
+  #status {
+    margin-top: 1em;
+    font-size: 1em;
+  }
+</style>
+</head>
+<body>
+
+<h1>Android Flashlight</h1>
+<button id="toggleBtn">Turn On Flashlight</button>
+<div id="status">Initializing...</div>
+
+<script>
+  const toggleBtn = document.getElementById('toggleBtn');
+  const statusDiv = document.getElementById('status');
+  let stream = null;
+  let track = null;
+  let flashlightOn = false;
+
+  async function initializeCamera() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      statusDiv.textContent = "Camera API not supported.";
+      toggleBtn.disabled = true;
+      return;
+    }
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+      track = stream.getVideoTracks()[0];
+      const imageCapture = new ImageCapture(track);
+      const capabilities = await imageCapture.getPhotoCapabilities();
+
+      if (!capabilities.fillLightMode || !capabilities.fillLightMode.includes('torch')) {
+        statusDiv.textContent = "Torch mode not supported on this device.";
+        toggleBtn.disabled = true;
+        return;
+      }
+      statusDiv.textContent = "Ready to toggle flashlight.";
+      toggleBtn.disabled = false;
+    } catch (err) {
+      console.error(err);
+      statusDiv.textContent = "Error accessing camera.";
+      toggleBtn.disabled = true;
+    }
+  }
+
+  async function toggleFlashlight() {
+    if (!track) return;
+    try {
+      await track.applyConstraints({ advanced: [{ torch: !flashlightOn }] });
+      flashlightOn = !flashlightOn;
+      toggleBtn.textContent = flashlightOn ? 'Turn Off Flashlight' : 'Turn On Flashlight';
+      statusDiv.textContent = flashlightOn ? 'Flashlight is ON' : 'Flashlight is OFF';
+    } catch (err) {
+      console.error(err);
+      statusDiv.textContent = 'Failed to toggle flashlight.';
+    }
+  }
+
+  toggleBtn.addEventListener('click', () => {
+    toggleFlashlight();
+  });
+
+  // Initialize on page load
+  window.onload = initializeCamera;
+
+  // Cleanup on page unload
+  window.onbeforeunload = () => {
+    if (stream) {
+      stream.getTracks().forEach(t => t.stop());
+    }
+  };
+</script>
+
+</body>
+</html>
