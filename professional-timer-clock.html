@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#667eea">
+    <meta name="description" content="Professional Timer & Clock - Offline Ready">
+    <link rel="manifest" href="data:application/manifest+json;base64,ewogICJuYW1lIjogIlByb2Zlc3Npb25hbCBUaW1lciAmIENsb2NrIiwKICAic2hvcnRfbmFtZSI6ICJUaW1lciBDbG9jayIsCiAgImRlc2NyaXB0aW9uIjogIkFsbC1pbi1vbmUgdGltZXIsIGNsb2NrLCBzdG9wd2F0Y2ggYW5kIGFsYXJtIGFwcCIsCiAgInN0YXJ0X3VybCI6ICIuLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzY2N2VlYSIsCiAgInRoZW1lX2NvbG9yIjogIiM2NjdlZWEiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUI0Yld4dWN6MGlhSFIwY0RvdkwzZDNkeTUzTXk1dmNtY3ZNakF3TUM5emRtY2lJSGRwWkhSb1BTSXhPVElpSUdobGFXZG9kRDBpTVRreUlqNDhjbVZqZENCM2FXUjBhRDBpTVRreUlpQm9aV2xuYUhROUlqRTVNaUlnWm1sc2JEMGlJelkyTjJWbFlTSXZQanh3WVhSb0lHUTlJazB4TURBZ05UQXhNekF1TmpVZ016QTNNREF1TmpVZ016QjJNekJvTFRRd2JERXdMVEV3YURFd2JERXdMVEV3ZGkweE1Hd3hNQzB4TUdneE1Hd3hNQzB4TUhZdE1UQm9ORFpzTFRFd0xURXdkaTB4TUd3dE1UQXRNVEIyTVRCb0xUUXdXbTB3TFRFd1l6QXRNVEFnT0MwNElERTRMVEU0Y3pFNExUZ2dNVGd0TVRoNk1pSWdabWxzYkQwaUkyWm1abVptWmlJdlBqd3ZjM1puUGc9PSIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIKICAgIH0sCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01DOXpkbWNpSUhkcFpIUm9QU0kxTVRJaUlHaGxhV2RvZEQwaU5URXlJajQ4Y21WamRDQjNhV1IwYUQwaU5URXlJaUJvWldsbmFIUTlJalV4TWlJZ1ptbHNiRDBpSXpZMk4yVmxZU0l2UGp4d1lYUm9JR1E5SWsweU5UWWdNVEl3WXpBdE1qY3VOU0F5TWkwMU1DQTFNQzAxTUhNeU1pMHlNaTQxSURVd0xUVXdkalF3WTBBNU5pQTVOaUF3SURBZ01TQXhPVElnTVRreWRqUXdZekF0TWpjdU5TMHlNaTAxTUMwMU1DMDFNSE10TlRBdE1qSXVOUzAxTUMwMU1Gb3lJaUJtYVd4c1BTSWpabVptWm1abUlpOCtQSEJoZEdnZ1pEMGlUVEkxTmlBeE1qQmpNQzB5Tnk0MUlESXlMVFV3SURVd0xUVXdjelV3SURJeUxqVWdOVEFnTlRCMk5EQmpNQ0F5Tnk0MUxUSXlJRFV3TFRVd0lEVXdjekExTUMweU1pNDFMVFV3TFRVd2RpMDBNSHBOTWpVMklERTBNR013TFRFd0lEZ3RPQ0F4T0MweE9ITXhPQzA0SURFNExURTRlakl3SWlCbWFXeHNQU0lqWm1abVptWm1JaTgrUEM5emRtYytQQT09IiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIgogICAgfQogIF0KfQ==">
+    <title>Professional Timer & Clock - Offline</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .install-banner {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            animation: slideDown 0.5s;
+        }
+
+        .install-banner.show {
+            display: flex;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .install-btn {
+            background: white;
+            color: #11998e;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .offline-indicator {
+            background: #ff6b6b;
+            color: white;
+            padding: 8px;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .offline-indicator.show {
+            display: block;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .tab {
+            flex: 1;
+            min-width: 80px;
+            padding: 12px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .display {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: #00ff88;
+            font-size: 48px;
+            font-weight: bold;
+            text-align: center;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            font-family: 'Courier New', monospace;
+            box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .clock-display {
+            font-size: 56px;
+        }
+
+        .date-display {
+            font-size: 18px;
+            color: #64ffda;
+            margin-top: 10px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: white;
+            min-width: 100px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .input-group input {
+            padding: 12px;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            font-size: 16px;
+            width: 80px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .input-group label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .lap-times {
+            max-height: 200px;
+            overflow-y: auto;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .lap-item {
+            padding: 10px;
+            margin-bottom: 5px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .alarm-list {
+            margin-top: 20px;
+        }
+
+        .alarm-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .alarm-item.active {
+            background: #d4edda;
+            border: 2px solid #28a745;
+        }
+
+        .alarm-time {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .alarm-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s;
+        }
+
+        .alarm-modal.active {
+            display: flex;
+        }
+
+        .alarm-modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            animation: scaleIn 0.3s;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.8); }
+            to { transform: scale(1); }
+        }
+
+        .alarm-modal h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        @media (max-width: 480px) {
+            .display {
+                font-size: 36px;
+                padding: 20px;
+            }
+
+            .clock-display {
+                font-size: 42px;
+            }
+
+            .btn {
+                padding: 12px 20px;
+                font-size: 14px;
+                min-width: 90px;
+            }
+
+            .tab {
+                font-size: 11px;
+                padding: 10px 8px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⏰ Professional Timer & Clock</h1>
+        
+        <!-- Install Banner -->
+        <div class="install-banner" id="installBanner">
+            <span>📱 Install this app for offline use!</span>
+            <button class="install-btn" id="installBtn">Install</button>
+        </div>
+
+        <!-- Offline Indicator -->
+        <div class="offline-indicator" id="offlineIndicator">
+            🔴 You are offline - App working in offline mode
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('clock')">🕐 Clock</button>
+            <button class="tab" onclick="switchTab('timer')">⏲️ Timer</button>
+            <button class="tab" onclick="switchTab('countdown')">⏳ Countdown</button>
+            <button class="tab" onclick="switchTab('stopwatch')">⏱️ Stopwatch</button>
+            <button class="tab" onclick="switchTab('alarm')">⏰ Alarm</button>
+        </div>
+
+        <!-- Digital Clock -->
+        <div id="clock" class="tab-content active">
+            <div class="display clock-display" id="clockDisplay">00:00:00</div>
+            <div class="display date-display" id="dateDisplay"></div>
+        </div>
+
+        <!-- Online Timer -->
+        <div id="timer" class="tab-content">
+            <div class="display" id="timerDisplay">00:00:00</div>
+            <div class="input-group">
+                <label>
+                    <input type="number" id="timerHours" min="0" max="23" value="0">
+                    <span>Hours</span>
+                </label>
+                <label>
+                    <input type="number" id="timerMinutes" min="0" max="59" value="0">
+                    <span>Minutes</span>
+                </label>
+                <label>
+                    <input type="number" id="timerSeconds" min="0" max="59" value="30">
+                    <span>Seconds</span>
+                </label>
+            </div>
+            <div class="controls">
+                <button class="btn btn-success" onclick="startTimer()">Start</button>
+                <button class="btn btn-warning" onclick="pauseTimer()">Pause</button>
+                <button class="btn btn-danger" onclick="resetTimer()">Reset</button>
+            </div>
+        </div>
+
+        <!-- Countdown Timer -->
+        <div id="countdown" class="tab-content">
+            <div class="display" id="countdownDisplay">00:00:00</div>
+            <div class="input-group">
+                <label>
+                    <input type="number" id="countdownHours" min="0" max="23" value="0">
+                    <span>Hours</span>
+                </label>
+                <label>
+                    <input type="number" id="countdownMinutes" min="0" max="59" value="1">
+                    <span>Minutes</span>
+                </label>
+                <label>
+                    <input type="number" id="countdownSeconds" min="0" max="59" value="0">
+                    <span>Seconds</span>
+                </label>
+            </div>
+            <div class="controls">
+                <button class="btn btn-success" onclick="startCountdown()">Start</button>
+                <button class="btn btn-warning" onclick="pauseCountdown()">Pause</button>
+                <button class="btn btn-danger" onclick="resetCountdown()">Reset</button>
+            </div>
+        </div>
+
+        <!-- Stopwatch -->
+        <div id="stopwatch" class="tab-content">
+            <div class="display" id="stopwatchDisplay">00:00:00.00</div>
+            <div class="controls">
+                <button class="btn btn-success" onclick="startStopwatch()">Start</button>
+                <button class="btn btn-warning" onclick="pauseStopwatch()">Pause</button>
+                <button class="btn btn-primary" onclick="lapStopwatch()">Lap</button>
+                <button class="btn btn-danger" onclick="resetStopwatch()">Reset</button>
+            </div>
+            <div class="lap-times" id="lapTimes"></div>
+        </div>
+
+        <!-- Alarm -->
+        <div id="alarm" class="tab-content">
+            <div class="input-group">
+                <label>
+                    <input type="time" id="alarmTime" style="width: 150px;">
+                    <span>Set Time</span>
+                </label>
+            </div>
+            <div class="controls">
+                <button class="btn btn-success" onclick="addAlarm()">Add Alarm</button>
+            </div>
+            <div class="alarm-list" id="alarmList"></div>
+        </div>
+    </div>
+
+    <!-- Alarm Modal -->
+    <div class="alarm-modal" id="alarmModal">
+        <div class="alarm-modal-content">
+            <h2>⏰ Alarm Ringing!</h2>
+            <div class="display" style="margin: 20px 0;">Time's Up!</div>
+            <button class="btn btn-danger" onclick="stopAlarmSound()">Stop Alarm</button>
+        </div>
+    </div>
+
+    <script>
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                registerServiceWorker();
+            });
+        }
+
+        function registerServiceWorker() {
+            const swCode = `
+                const CACHE_NAME = 'timer-clock-v1';
+                
+                self.addEventListener('install', (event) => {
+                    event.waitUntil(
+                        caches.open(CACHE_NAME).then((cache) => {
+                            return cache.addAll(['/']);
+                        })
+                    );
+                    self.skipWaiting();
+                });
+
+                self.addEventListener('fetch', (event) => {
+                    event.respondWith(
+                        caches.match(event.request).then((response) => {
+                            return response || fetch(event.request).catch(() => {
+                                return caches.match('/');
+                            });
+                        })
+                    );
+                });
+
+                self.addEventListener('activate', (event) => {
+                    event.waitUntil(
+                        caches.keys().then((cacheNames) => {
+                            return Promise.all(
+                                cacheNames.map((cacheName) => {
+                                    if (cacheName !== CACHE_NAME) {
+                                        return caches.delete(cacheName);
+                                    }
+                                })
+                            );
+                        })
+                    );
+                    return self.clients.claim();
+                });
+            `;
+
+            const blob = new Blob([swCode], { type: 'application/javascript' });
+            const swUrl = URL.createObjectURL(blob);
+
+            navigator.serviceWorker.register(swUrl)
+                .then((registration) => {
+                    console.log('✅ Service Worker registered successfully');
+                })
+                .catch((error) => {
+                    console.log('❌ Service Worker registration failed:', error);
+                });
+        }
+
+        // PWA Install Prompt
+        let deferredPrompt;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installBanner').classList.add('show');
+        });
+
+        document.getElementById('installBtn').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    document.getElementById('installBanner').classList.remove('show');
+                }
+                deferredPrompt = null;
+            }
+        });
+
+        // Online/Offline Detection
+        window.addEventListener('online', () => {
+            document.getElementById('offlineIndicator').classList.remove('show');
+        });
+
+        window.addEventListener('offline', () => {
+            document.getElementById('offlineIndicator').classList.add('show');
+        });
+
+        // Check initial status
+        if (!navigator.onLine) {
+            document.getElementById('offlineIndicator').classList.add('show');
+        }
+
+        // Variables
+        let timerInterval, countdownInterval, stopwatchInterval, clockInterval;
+        let timerRunning = false, countdownRunning = false, stopwatchRunning = false;
+        let timerTime = 0, countdownTime = 0, stopwatchTime = 0;
+        let alarms = [];
+        let lapCounter = 0;
+        let alarmAudio;
+
+        // Initialize
+        function init() {
+            updateClock();
+            clockInterval = setInterval(updateClock, 1000);
+            checkAlarms();
+            setInterval(checkAlarms, 1000);
+            loadAlarmsFromStorage();
+        }
+
+        // LocalStorage for alarms
+        function saveAlarmsToStorage() {
+            try {
+                const alarmsData = JSON.stringify(alarms);
+                localStorage.setItem('timerClockAlarms', alarmsData);
+            } catch (e) {
+                console.log('Storage not available');
+            }
+        }
+
+        function loadAlarmsFromStorage() {
+            try {
+                const savedAlarms = localStorage.getItem('timerClockAlarms');
+                if (savedAlarms) {
+                    alarms = JSON.parse(savedAlarms);
+                    renderAlarms();
+                }
+            } catch (e) {
+                console.log('Storage not available');
+            }
+        }
+
+        // Switch Tabs
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        // Digital Clock
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clockDisplay').textContent = `${hours}:${minutes}:${seconds}`;
+            
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('dateDisplay').textContent = now.toLocaleDateString('hi-IN', options);
+        }
+
+        // Timer Functions
+        function startTimer() {
+            if (!timerRunning) {
+                if (timerTime === 0) {
+                    const hours = parseInt(document.getElementById('timerHours').value) || 0;
+                    const minutes = parseInt(document.getElementById('timerMinutes').value) || 0;
+                    const seconds = parseInt(document.getElementById('timerSeconds').value) || 0;
+                    timerTime = hours * 3600 + minutes * 60 + seconds;
+                }
+                timerRunning = true;
+                timerInterval = setInterval(() => {
+                    if (timerTime > 0) {
+                        timerTime--;
+                        updateTimerDisplay();
+                    } else {
+                        pauseTimer();
+                        playAlarmSound();
+                    }
+                }, 1000);
+            }
+        }
+
+        function pauseTimer() {
+            timerRunning = false;
+            clearInterval(timerInterval);
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            timerTime = 0;
+            updateTimerDisplay();
+        }
+
+        function updateTimerDisplay() {
+            const hours = Math.floor(timerTime / 3600);
+            const minutes = Math.floor((timerTime % 3600) / 60);
+            const seconds = timerTime % 60;
+            document.getElementById('timerDisplay').textContent = 
+                `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        // Countdown Functions
+        function startCountdown() {
+            if (!countdownRunning) {
+                if (countdownTime === 0) {
+                    const hours = parseInt(document.getElementById('countdownHours').value) || 0;
+                    const minutes = parseInt(document.getElementById('countdownMinutes').value) || 0;
+                    const seconds = parseInt(document.getElementById('countdownSeconds').value) || 0;
+                    countdownTime = hours * 3600 + minutes * 60 + seconds;
+                }
+                countdownRunning = true;
+                countdownInterval = setInterval(() => {
+                    if (countdownTime > 0) {
+                        countdownTime--;
+                        updateCountdownDisplay();
+                    } else {
+                        pauseCountdown();
+                        playAlarmSound();
+                    }
+                }, 1000);
+            }
+        }
+
+        function pauseCountdown() {
+            countdownRunning = false;
+            clearInterval(countdownInterval);
+        }
+
+        function resetCountdown() {
+            pauseCountdown();
+            countdownTime = 0;
+            updateCountdownDisplay();
+        }
+
+        function updateCountdownDisplay() {
+            const hours = Math.floor(countdownTime / 3600);
+            const minutes = Math.floor((countdownTime % 3600) / 60);
+            const seconds = countdownTime % 60;
+            document.getElementById('countdownDisplay').textContent = 
+                `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        // Stopwatch Functions
+        function startStopwatch() {
+            if (!stopwatchRunning) {
+                stopwatchRunning = true;
+                const startTime = Date.now() - stopwatchTime;
+                stopwatchInterval = setInterval(() => {
+                    stopwatchTime = Date.now() - startTime;
+                    updateStopwatchDisplay();
+                }, 10);
+            }
+        }
+
+        function pauseStopwatch() {
+            stopwatchRunning = false;
+            clearInterval(stopwatchInterval);
+        }
+
+        function resetStopwatch() {
+            pauseStopwatch();
+            stopwatchTime = 0;
+            lapCounter = 0;
+            updateStopwatchDisplay();
+            document.getElementById('lapTimes').innerHTML = '';
+        }
+
+        function lapStopwatch() {
+            if (stopwatchRunning) {
+                lapCounter++;
+                const lapTime = formatStopwatchTime(stopwatchTime);
+                const lapItem = document.createElement('div');
+                lapItem.className = 'lap-item';
+                lapItem.innerHTML = `<span>Lap ${lapCounter}</span><span>${lapTime}</span>`;
+                document.getElementById('lapTimes').prepend(lapItem);
+            }
+        }
+
+        function updateStopwatchDisplay() {
+            document.getElementById('stopwatchDisplay').textContent = formatStopwatchTime(stopwatchTime);
+        }
+
+        function formatStopwatchTime(ms) {
+            const totalSeconds = Math.floor(ms / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            const milliseconds = Math.floor((ms % 1000) / 10);
+            return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${String(milliseconds).padStart(2, '0')}`;
+        }
+
+        // Alarm Functions
+        function addAlarm() {
+            const timeInput = document.getElementById('alarmTime').value;
+            if (timeInput) {
+                alarms.push({ time: timeInput, active: true });
+                renderAlarms();
+                saveAlarmsToStorage();
+                document.getElementById('alarmTime').value = '';
+            }
+        }
+
+        function deleteAlarm(index) {
+            alarms.splice(index, 1);
+            renderAlarms();
+            saveAlarmsToStorage();
+        }
+
+        function renderAlarms() {
+            const alarmList = document.getElementById('alarmList');
+            alarmList.innerHTML = '';
+            alarms.forEach((alarm, index) => {
+                const alarmItem = document.createElement('div');
+                alarmItem.className = `alarm-item ${alarm.active ? 'active' : ''}`;
+                alarmItem.innerHTML = `
+                    <div>
+                        <div class="alarm-time">${alarm.time}</div>
+                        <small>${alarm.active ? '✅ Active' : '❌ Inactive'}</small>
+                    </div>
+                    <button class="delete-btn" onclick="deleteAlarm(${index})">Delete</button>
+                `;
+                alarmList.appendChild(alarmItem);
+            });
+        }
+
+        function checkAlarms() {
+            const now = new Date();
+            const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+            
+            alarms.forEach((alarm, index) => {
+                if (alarm.active && alarm.time === currentTime) {
+                    playAlarmSound();
+                    alarms[index].active = false;
+                    renderAlarms();
+                    saveAlarmsToStorage();
+                }
+            });
+        }
+
+        function playAlarmSound() {
+            document.getElementById('alarmModal').classList.add('active');
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = 800;
+            oscillator.type = 'sine';
+            gainNode.gain.value = 0.3;
+            
+            oscillator.start();
+            
+            alarmAudio = { oscillator, audioContext, gainNode };
+            
+            let beepCount = 0;
+            const beepInterval = setInterval(() => {
+                if (beepCount < 10) {
+                    gainNode.gain.value = gainNode.gain.value === 0.3 ? 0 : 0.3;
+                    beepCount++;
+                } else {
+                    clearInterval(beepInterval);
+                }
+            }, 300);
+        }
+
+        function stopAlarmSound() {
+            if (alarmAudio) {
+                alarmAudio.oscillator.stop();
+                alarmAudio.audioContext.close();
+            }
+            document.getElementById('alarmModal').classList.remove('active');
+        }
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>
