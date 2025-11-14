@@ -12,13 +12,14 @@
             color: #00ff00;
             font-family: 'Share Tech Mono', monospace;
             display: flex;
+            flex-direction: column; /* ADDED: Taki terminal aur footer stack ho sakein */
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
             padding: 10px;
             box-sizing: border-box;
-            overflow: hidden;
+            /* overflow: hidden; */ /* REMOVED: Taki footer dekhne ke liye scroll kar sakein */
         }
 
         /* --- PRELOADER STYLES --- */
@@ -78,6 +79,8 @@
             background: #0a0a0a;
             display: flex;
             flex-direction: column;
+            /* Margin-top added to separate from preloader in case of quick load */
+            margin-top: 10px; 
         }
 
         .terminal-header {
@@ -233,11 +236,67 @@
             .party-button { padding: 10px 20px; font-size: 0.9em; }
             .party-pic { max-width: 95%; }
         }
+
+        /* --- BAWAL FOOTER STYLES (FROM SAVED CONTEXT) --- */
+        .bawal-footer-wrapper{
+            text-align:center;
+            margin-top:30px;
+            margin-bottom:9px;
+            padding-top:20px;
+            border-top:1px solid#444;
+            position:relative;
+            z-index:10;
+            width: 100%; /* Ensure it takes width */
+            max-width: 900px; /* Match terminal width */
+            box-sizing: border-box; /* Include padding in width */
+        }
+        .bawal-footer-link{
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            background:#1A1A1A;
+            padding:10px 18px;
+            border-radius:25px;
+            text-decoration:none;
+            box-shadow:0 4px 10px rgba(0,0,0,.3);
+            border:1px solid rgba(255,255,255,.05);
+            transition:transform .3s ease,box-shadow .3s ease
+        }
+        .bawal-footer-link:hover{
+            transform:translateY(-5px) scale(1.03);
+            box-shadow:0 10px 25px rgba(0,0,0,.4),0 0 20px rgba(0,255,200,.4),0 0 30px rgba(0,255,200,.2)
+        }
+        .bawal-footer-link .dev-text{
+            color:#00ffc8;
+            font-weight:bold;
+            font-size:15px;
+            text-shadow:0 0 5px rgba(0,255,200,.5)
+        }
+        .bawal-footer-link .name-text{
+            display:flex;
+            align-items:center;
+            gap:5px;
+            color:#FFD700;
+            font-size:15px;
+            font-weight:bold;
+            text-shadow:0 0 5px rgba(255,215,0,.5)
+        }
+        .bawal-footer-link img{
+            width:22px;
+            height:22px;
+            border-radius:50%;
+            transition:transform .3s ease
+        } 
+        .bawal-footer-link:hover .telegram-icon{
+            transform:rotate(360deg)
+        }
+        .bawal-footer-link:hover .profile-pic{
+            transform:scale(1.15) rotate(-10deg)
+        }
     </style>
 </head>
 <body>
 
-    <!-- --- PRELOADER HTML --- -->
     <div id="preloader-container">
         <div class="progress-bar-container">
             <div class="progress-bar-fill" id="progress-fill"></div>
@@ -256,6 +315,14 @@
     </div>
 
     <audio id="partyMusic" src="ajay.mp3" preload="auto"></audio>
+
+    <div class="bawal-footer-wrapper">
+        <a href="https://babubhaikundan.blogspot.com" target="_blank" class="bawal-footer-link">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram" class="telegram-icon">
+            <span class="dev-text">Developer💀:-</span>
+            <span class="name-text">𝕂𝕦𝕟𝕕𝕒𝕟 𝕐𝕒𝕕𝕒𝕧 <img src="https://s.tfrbot.com/h/gL5VTi" alt="Kundan" class="profile-pic"></span>
+        </a>
+    </div>
 
     <script>
         // --- TELEGRAM NOTIFICATION LOGIC ---
@@ -498,3 +565,4 @@
     </script>
 </body>
 </html>
+
