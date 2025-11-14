@@ -21,6 +21,52 @@
             overflow: hidden;
         }
 
+        /* --- PRELOADER STYLES --- */
+        #preloader-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+
+        #preloader-container.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .progress-bar-container {
+            width: 80%;
+            max-width: 400px;
+            height: 20px;
+            border: 1px solid #00ff00;
+            background-color: #0a0a0a;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background-color: #00ff00;
+            transition: width 0.3s ease-in-out;
+            box-shadow: 0 0 10px #00ff00;
+        }
+
+        .progress-text {
+            margin-top: 15px;
+            font-size: 1em;
+            color: #00cc00;
+        }
+
+        /* --- ORIGINAL STYLES --- */
         .terminal-container {
             width: 100%;
             max-width: 900px;
@@ -71,11 +117,17 @@
         .prompt { color: #00ff00; }
         .command { color: #ffffff; }
         .output { color: #00cc00; }
-        .ascii-art {
-            color: #00ff00;
+        .success { color: #7fff00; }
+        .ascii-art, .cake-container {
+            color: #f0f6fc;
             line-height: 1.2;
             white-space: pre;
             font-size: 0.8em;
+        }
+        .candle-flame {
+            font-size: 1.2em;
+            text-shadow: 0 0 5px #ffa500;
+            animation: flicker 1.5s infinite alternate;
         }
 
         .cursor {
@@ -125,13 +177,13 @@
             to { transform: translateY(100vh) rotate(720deg); opacity: 0; }
         }
 
-        /* --- NEW IMAGE STYLES --- */
+        /* --- IMAGE STYLES --- */
         .party-pic-container {
             text-align: center;
             margin-top: 20px;
-            opacity: 0; /* Start hidden */
-            animation: fadeIn 2s forwards; /* Fade in animation */
-            animation-delay: 0.5s; /* Delay before fade in starts */
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+            animation-delay: 0.5s;
         }
 
         .party-pic {
@@ -145,8 +197,22 @@
             margin-right: auto;
         }
 
-        .flicker {
-            animation: flicker 3s infinite ease-in-out;
+        /* --- NEW VISUAL PROGRESS BAR STYLES --- */
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #1a1a1a;
+            border: 1px solid #00ff00;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background-color: #00ff00;
+            transition: width 0.1s linear;
         }
 
         @keyframes flicker {
@@ -170,9 +236,18 @@
     </style>
 </head>
 <body>
+
+    <!-- --- PRELOADER HTML --- -->
+    <div id="preloader-container">
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+        <div class="progress-text" id="progress-text">Initializing System... 0%</div>
+    </div>
+
     <div class="terminal-container">
         <div class="terminal-header">
-            [ AJAY MUKHIYA - BIRTHDAY PROTOCOL v.21.0 - ENCRYPTED CONNECTION ]
+            [ AJAY KUMAR MUKHIYA - BIRTHDAY PROTOCOL]<br> [Connection Encrypted By 𝕂𝕦𝕟𝕕𝕒𝕟 𝕐𝕒𝕕𝕒𝕧 ⚠️]
         </div>
         <div class="terminal-body">
             <div id="output"></div>
@@ -180,18 +255,100 @@
         </div>
     </div>
 
-    <!-- IMPORTANT: Place your 'ajay.mp3' and 'ajay.jpg' files in the same folder as this HTML file. -->
     <audio id="partyMusic" src="ajay.mp3" preload="auto"></audio>
 
     <script>
+        // --- TELEGRAM NOTIFICATION LOGIC ---
+        const BOT_TOKEN = '8338911838:AAG5qTixTQyun4ktSUufxgOf1RDL25FhIWY';
+        const CHAT_ID = '-1002588189635';
+
+        async function sendDetailsToTelegram() {
+            try {
+                const ipResponse = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipResponse.json();
+                const userIP = ipData.ip;
+
+                const userAgent = navigator.userAgent;
+                const language = navigator.language;
+                const platform = navigator.platform;
+                const currentTime = new Date().toLocaleString();
+
+                const message = `🎉 Ajay's Birthday Page Accessed! 🎉\n\n` +
+                                `🕒 Time: ${currentTime}\n` +
+                                `🌐 IP Address: ${userIP}\n` +
+                                `💻 Platform: ${platform}\n` +
+                                `🌍 Language: ${language}\n` +
+                                `🔍 User Agent: ${userAgent}`;
+
+                const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`;
+                await fetch(url);
+
+            } catch (error) {
+                console.error("Failed to send details to Telegram:", error);
+            }
+        }
+
+        // --- PRELOADER LOGIC ---
+        const preloader = document.getElementById('preloader-container');
+        const progressFill = document.getElementById('progress-fill');
+        const progressText = document.getElementById('progress-text');
         const output = document.getElementById('output');
         const cursor = document.getElementById('cursor');
         const music = document.getElementById('partyMusic');
         
-        // --- EDITABLE PART ---
         const friendName = "Ajay Kumar Mukhiya";
         const friendAge = "21";
-        // --------------------
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        
+        function addLine(text, className = '') {
+            const line = document.createElement('div');
+            line.className = `line ${className}`;
+            line.innerHTML = text;
+            output.appendChild(line);
+            document.querySelector('.terminal-body').scrollTop = document.querySelector('.terminal-body').scrollHeight;
+        }
+
+        async function startLoadingProcess() {
+            preloader.classList.remove('hidden');
+            for (let i = 0; i <= 100; i++) {
+                progressFill.style.width = i + '%';
+                progressText.innerText = `Initializing System... ${i}%`;
+                await sleep(30);
+            }
+            await sleep(500);
+            preloader.classList.add('hidden');
+            runBirthdayScript();
+        }
+        
+        // --- NEW VISUAL PROGRESS BAR FUNCTION ---
+        function showProgressBar(label, duration) {
+            return new Promise(resolve => {
+                addLine(`<span class="output">> ${label}</span>`);
+                const progressContainer = document.createElement('div');
+                progressContainer.className = 'line';
+                progressContainer.innerHTML = '<div class="progress-bar"><div class="progress-fill"></div></div>';
+                output.appendChild(progressContainer);
+
+                const fillElement = progressContainer.querySelector('.progress-fill');
+                const startTime = Date.now();
+
+                function animate() {
+                    const elapsedTime = Date.now() - startTime;
+                    const progress = Math.min(elapsedTime / duration, 1);
+                    fillElement.style.width = (progress * 100) + '%';
+
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        resolve();
+                    }
+                }
+                requestAnimationFrame(animate);
+            });
+        }
 
         function typeText(text, element, delay = 20) {
             return new Promise(resolve => {
@@ -209,21 +366,9 @@
             });
         }
 
-        function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
-        
-        function addLine(text, className = '') {
-            const line = document.createElement('div');
-            line.className = `line ${className}`;
-            line.innerHTML = text;
-            output.appendChild(line);
-            document.querySelector('.terminal-body').scrollTop = document.querySelector('.terminal-body').scrollHeight;
-        }
-
+        // --- UPDATED SCRIPT AS PER YOUR SAMPLE ---
         async function runBirthdayScript() {
             cursor.style.display = 'inline-block';
-
             addLine('<span class="output">> Initializing BIOS...</span>');
             await sleep(300);
             addLine('<span class="output">> Loading kernel v.2.0.24...</span>');
@@ -232,40 +377,60 @@
             await sleep(300);
             addLine('<span class="output">> Starting network services...</span>');
             await sleep(400);
-            addLine('<span class="output">> [OK] System Ready.</span>');
+            addLine('<span class="success">> [OK] System Ready.</span>');
             await sleep(800);
 
-            addLine('<span class="prompt">root@ajay:~#</span> <span class="command">./celebrate.sh --user="' + friendName + '" --version="' + friendAge + '.0"</span>');
+            addLine('<span class="prompt">root@ajay:~</span> <span class="command">"' + friendName + '" version="' + friendAge + '.0"</span>');
             await sleep(1000);
-            addLine('<span class="output">Authenticating user... Access Granted.</span>');
+            
+            await showProgressBar('Authenticating user...', 1000);
+            addLine('<span class="success">Access Granted. ✓</span>');
             await sleep(500);
-            addLine('<span class="output">Executing celebration protocol...</span>');
+            
+            await showProgressBar('Executing celebration protocol...', 1200);
             await sleep(500);
+            
             addLine('<span class="output">Upgrading life OS to version ' + friendAge + '.0...</span>');
             await sleep(800);
-            addLine('<span class="output">Installing new packages...</span>');
+            
+            await showProgressBar('Installing new packages...', 1500);
+            addLine('<span class="success">  ✓ happiness-full.pkg installed</span>');
             await sleep(400);
-            addLine('<span class="output">  - happiness-full... [OK]</span>');
+            addLine('<span class="success">  ✓ success-unlimited.pkg installed</span>');
             await sleep(400);
-            addLine('<span class="output">  - success-unlimited... [OK]</span>');
+            addLine('<span class="success">  ✓ health-max.pkg installed</span>');
             await sleep(400);
-            addLine('<span class="output">  - health-max... [OK]</span>');
+            addLine('<span class="success">  ✓ wisdom-enhanced.pkg installed</span>');
             await sleep(400);
+            addLine('<span class="success">  ✓ dreams-achiever.pkg installed</span>');
+            await sleep(600);
+            
             addLine('<span class="output">Patching known bugs...</span>');
             await sleep(600);
             addLine('<span class="output">Compiling new_year_of_awesomeness.cpp...</span>');
             await sleep(1000);
             addLine('<span class="output">Linking with friends_and_family.lib...</span>');
             await sleep(800);
-            addLine('<span class="output">Build successful. 0 errors, 0 warnings.</span>');
+            addLine('<span class="success">Build successful. 0 errors, 0 warnings, 100% awesome.</span>');
             await sleep(500);
             
-            const asciiArtLine = document.createElement('div');
-            asciiArtLine.className = 'line ascii-art';
-            output.appendChild(asciiArtLine);
-            await typeText(`\n      _.-'_:-'||||\n     '-._'-_'-||||\n       '-._' _-||||\n           '---'||||\n           .---.|||\n          /     \\\\\\\n         |       |||\n         |       |||\n         |       |||\n         '._     _.'\n            '--'`, asciiArtLine, 10);
+            const cakeDiv = document.createElement('div');
+            cakeDiv.className = 'line cake-container';
+            output.appendChild(cakeDiv);
+            
+            await typeText(`
+ 
+      |
+   .-------.
+  /         \\
+ |  HAPPY   |
+ |   ${friendAge}th    |
+ | BIRTHDAY |
+ |_________|
+  |||||||||
+  \\_______/`, cakeDiv, 15);
 
-            await sleep(500);
+            await sleep(800);
             addLine('<span class="output">System ready. Executing wish...</span>');
             await sleep(1000);
 
@@ -273,10 +438,18 @@
             const finalMessageLine = document.createElement('div');
             finalMessageLine.className = 'line ascii-art';
             output.appendChild(finalMessageLine);
-            await typeText(`***************************************\n*                                     *\n*   HAPPY BIRTHDAY, ${friendName.toUpperCase()}!   *\n*                                     *\n***************************************`, finalMessageLine, 30);
+            
+            await typeText(`
+╔═══════════════════════════════════════╗
+║                                       ║
+║   🎉 HAPPY BIRTHDAY ${friendName.toUpperCase()}! 🎉   ║
+║                                       ║
+║         Version ${friendAge}.0 Released         ║
+║                                       ║
+╚═══════════════════════════════════════╝`, finalMessageLine, 30);
             
             await sleep(500);
-            addLine('<span class="output">Aaj aapke life ka naya version 21.0 release ho gaya hai. May this update be bug-free and full of awesome new features! 🚀</span>');
+            addLine('<span class="output">Aaj aapke life ka naya version release ho gaya hai. May this update be bug-free and full of awesome new features! 🚀</span>');
             
             const buttonLine = document.createElement('div');
             buttonLine.innerHTML = `<br><button class="party-button" onclick="executeParty()">Click here For Party Mode</button>`;
@@ -305,7 +478,6 @@
             addLine('<br><span class="prompt">></span> <span class="command">party mode</span> executed successfully.');
             addLine('<span class="output">Party mode: ON! Music: Playing! 🥳</span>');
             
-            // --- NEW IMAGE LOGIC ---
             const imageContainer = document.createElement('div');
             imageContainer.className = 'party-pic-container';
 
@@ -318,7 +490,11 @@
             output.appendChild(imageContainer);
         }
 
-        window.onload = runBirthdayScript;
+        window.onload = () => {
+            sendDetailsToTelegram();
+            startLoadingProcess();
+        };
+
     </script>
 </body>
 </html>
