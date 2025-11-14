@@ -190,7 +190,7 @@
         
         // --- EDITABLE PART ---
         const friendName = "Ajay Kumar Mukhiya";
-        const friendAge = "20";
+        const friendAge = "21";
         // --------------------
 
         function typeText(text, element, delay = 20) {
@@ -279,7 +279,7 @@
             addLine('<span class="output">Aaj aapke life ka naya version 21.0 release ho gaya hai. May this update be bug-free and full of awesome new features! 🚀</span>');
             
             const buttonLine = document.createElement('div');
-            buttonLine.innerHTML = `<br><button class="party-button" onclick="executeParty()">Go For Party</button>`;
+            buttonLine.innerHTML = `<br><button class="party-button" onclick="executeParty()">Click here For Party Mode</button>`;
             output.appendChild(buttonLine);
 
             cursor.style.display = 'none';
@@ -302,7 +302,7 @@
                 setTimeout(() => confetti.remove(), 4000);
             }
             
-            addLine('<br><span class="prompt">></span> <span class="command">party.sh</span> executed successfully.');
+            addLine('<br><span class="prompt">></span> <span class="command">party mode</span> executed successfully.');
             addLine('<span class="output">Party mode: ON! Music: Playing! 🥳</span>');
             
             // --- NEW IMAGE LOGIC ---
