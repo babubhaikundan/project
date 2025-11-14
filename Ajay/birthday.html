@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajay Birthday 🎂</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        body {
+            background-color: #000000;
+            color: #00ff00;
+            font-family: 'Share Tech Mono', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 10px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .terminal-container {
+            width: 100%;
+            max-width: 900px;
+            height: 90vh;
+            border: 2px solid #00ff00;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 25px rgba(0, 255, 0, 0.5);
+            background: #0a0a0a;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .terminal-header {
+            background: #1a1a1a;
+            padding: 8px 15px;
+            text-align: center;
+            border-bottom: 1px solid #00ff00;
+            font-size: 0.9em;
+            color: #00cc00;
+        }
+
+        .terminal-body {
+            flex-grow: 1;
+            padding: 15px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            background: #000000;
+        }
+
+        .terminal-body::-webkit-scrollbar {
+            width: 6px;
+        }
+        .terminal-body::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        .terminal-body::-webkit-scrollbar-thumb {
+            background: #00ff00;
+            border-radius: 3px;
+        }
+
+        .line {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.5;
+        }
+
+        .prompt { color: #00ff00; }
+        .command { color: #ffffff; }
+        .output { color: #00cc00; }
+        .ascii-art {
+            color: #00ff00;
+            line-height: 1.2;
+            white-space: pre;
+            font-size: 0.8em;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.2em;
+            background-color: #00ff00;
+            animation: blink 1s step-end infinite;
+            vertical-align: text-bottom;
+        }
+
+        @keyframes blink {
+            from, to { background-color: transparent; }
+            50% { background-color: #00ff00; }
+        }
+
+        .party-button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1em;
+            background-color: transparent;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .party-button:hover {
+            background-color: #00ff00;
+            color: #000000;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.8);
+        }
+        
+        /* Confetti Styles */
+        .confetti {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #f0f;
+            animation: confetti-fall 3s linear forwards;
+        }
+        @keyframes confetti-fall {
+            to { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* --- NEW IMAGE STYLES --- */
+        .party-pic-container {
+            text-align: center;
+            margin-top: 20px;
+            opacity: 0; /* Start hidden */
+            animation: fadeIn 2s forwards; /* Fade in animation */
+            animation-delay: 0.5s; /* Delay before fade in starts */
+        }
+
+        .party-pic {
+            max-width: 80%;
+            height: auto;
+            border-radius: 10px;
+            border: 2px solid #00ff00;
+            box-shadow: 0 0 25px rgba(0, 255, 0, 0.8);
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .flicker {
+            animation: flicker 3s infinite ease-in-out;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* Mobile Specific Adjustments */
+        @media (max-width: 768px) {
+            body { padding: 5px; }
+            .terminal-container { height: 95vh; border-radius: 5px; }
+            .terminal-body { padding: 10px; font-size: 0.9em; }
+            .ascii-art { font-size: 0.7em; }
+            .party-button { padding: 10px 20px; font-size: 0.9em; }
+            .party-pic { max-width: 95%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="terminal-container">
+        <div class="terminal-header">
+            [ BIRTHDAY PROTOCOL v.3.1 - ENCRYPTED CONNECTION ]
+        </div>
+        <div class="terminal-body">
+            <div id="output"></div>
+            <span id="cursor"></span>
+        </div>
+    </div>
+
+    <!-- IMPORTANT: Place your 'ajay.mp3' and 'ajay.jpg' files in the same folder as this HTML file. -->
+    <audio id="partyMusic" src="ajay.mp3" preload="auto"></audio>
+
+    <script>
+        const output = document.getElementById('output');
+        const cursor = document.getElementById('cursor');
+        const music = document.getElementById('partyMusic');
+        
+        // --- EDITABLE PART ---
+        const friendName = "Ajay Kumar Mukhiya";
+        const friendAge = "20";
+        // --------------------
+
+        function typeText(text, element, delay = 20) {
+            return new Promise(resolve => {
+                let i = 0;
+                element.innerHTML = '';
+                const interval = setInterval(() => {
+                    if (i < text.length) {
+                        element.innerHTML += text.charAt(i);
+                        i++;
+                    } else {
+                        clearInterval(interval);
+                        resolve();
+                    }
+                }, delay);
+            });
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        
+        function addLine(text, className = '') {
+            const line = document.createElement('div');
+            line.className = `line ${className}`;
+            line.innerHTML = text;
+            output.appendChild(line);
+            document.querySelector('.terminal-body').scrollTop = document.querySelector('.terminal-body').scrollHeight;
+        }
+
+        async function runBirthdayScript() {
+            cursor.style.display = 'inline-block';
+
+            addLine('<span class="output">> Initializing BIOS...</span>');
+            await sleep(300);
+            addLine('<span class="output">> Loading kernel v.2.0.24...</span>');
+            await sleep(400);
+            addLine('<span class="output">> Mounting /dev/life...</span>');
+            await sleep(300);
+            addLine('<span class="output">> Starting network services...</span>');
+            await sleep(400);
+            addLine('<span class="output">> [OK] System Ready.</span>');
+            await sleep(800);
+
+            addLine('<span class="prompt">root@ajay:~#</span> <span class="command">./celebrate.sh --user="' + friendName + '" --version="' + friendAge + '.0"</span>');
+            await sleep(1000);
+            addLine('<span class="output">Authenticating user... Access Granted.</span>');
+            await sleep(500);
+            addLine('<span class="output">Executing celebration protocol...</span>');
+            await sleep(500);
+            addLine('<span class="output">Upgrading life OS to version ' + friendAge + '.0...</span>');
+            await sleep(800);
+            addLine('<span class="output">Installing new packages...</span>');
+            await sleep(400);
+            addLine('<span class="output">  - happiness-full... [OK]</span>');
+            await sleep(400);
+            addLine('<span class="output">  - success-unlimited... [OK]</span>');
+            await sleep(400);
+            addLine('<span class="output">  - health-max... [OK]</span>');
+            await sleep(400);
+            addLine('<span class="output">Patching known bugs...</span>');
+            await sleep(600);
+            addLine('<span class="output">Compiling new_year_of_awesomeness.cpp...</span>');
+            await sleep(1000);
+            addLine('<span class="output">Linking with friends_and_family.lib...</span>');
+            await sleep(800);
+            addLine('<span class="output">Build successful. 0 errors, 0 warnings.</span>');
+            await sleep(500);
+            
+            const asciiArtLine = document.createElement('div');
+            asciiArtLine.className = 'line ascii-art';
+            output.appendChild(asciiArtLine);
+            await typeText(`\n      _.-'_:-'||||\n     '-._'-_'-||||\n       '-._' _-||||\n           '---'||||\n           .---.|||\n          /     \\\\\\\n         |       |||\n         |       |||\n         |       |||\n         '._     _.'\n            '--'`, asciiArtLine, 10);
+
+            await sleep(500);
+            addLine('<span class="output">System ready. Executing wish...</span>');
+            await sleep(1000);
+
+            output.innerHTML = '';
+            const finalMessageLine = document.createElement('div');
+            finalMessageLine.className = 'line ascii-art';
+            output.appendChild(finalMessageLine);
+            await typeText(`***************************************\n*                                     *\n*   HAPPY BIRTHDAY, ${friendName.toUpperCase()}!   *\n*                                     *\n***************************************`, finalMessageLine, 30);
+            
+            await sleep(500);
+            addLine('<span class="output">Aaj aapke life ka naya version 21.0 release ho gaya hai. May this update be bug-free and full of awesome new features! 🚀</span>');
+            
+            const buttonLine = document.createElement('div');
+            buttonLine.innerHTML = `<br><button class="party-button" onclick="executeParty()">Run party.sh</button>`;
+            output.appendChild(buttonLine);
+
+            cursor.style.display = 'none';
+        }
+        
+        function executeParty() {
+            music.play().catch(error => console.log("Audio playback was prevented. Please interact with the page first.", error));
+
+            const colors = ['#00ff00', '#ff0000', '#0000ff', '#ffff00', '#ff00ff'];
+            const confettiCount = 150;
+
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 4000);
+            }
+            
+            addLine('<br><span class="prompt">></span> <span class="command">party.sh</span> executed successfully.');
+            addLine('<span class="output">Party mode: ON! Music: Playing! 🥳</span>');
+            
+            // --- NEW IMAGE LOGIC ---
+            const imageContainer = document.createElement('div');
+            imageContainer.className = 'party-pic-container';
+
+            const partyImage = document.createElement('img');
+            partyImage.src = 'ajay.jpg';
+            partyImage.alt = 'Birthday Boy Ajay';
+            partyImage.className = 'party-pic flicker';
+
+            imageContainer.appendChild(partyImage);
+            output.appendChild(imageContainer);
+        }
+
+        window.onload = runBirthdayScript;
+    </script>
+</body>
+</html>
